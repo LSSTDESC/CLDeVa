@@ -3,6 +3,7 @@ import healpy as hp
 import tables_io, os
 import numpy as np
 from astropy.table import Table, vstack
+from tqdm import tqdm
 
 filename_base = 'input_data/galcat/'
 input_base = '/sps/lsst/groups/desc/shared/xgal/roman-rubin/roman_rubin_2023_v1.1.3/'
@@ -31,14 +32,12 @@ info_dict['AREA'] = hp.nside2pixarea(64, degrees=True)
 info_dict['NMAG'] = 6
 info_dict['MODE'] = 'LSST'
 info_dict['ZP'] = 31.4
-#info_dict['B'] = b_array # if magnitudes are actually luptitudes
 info_dict['U_IND'] = 0 # u-band index
 info_dict['G_IND'] = 1 # g-band index
 info_dict['R_IND'] = 2 # r-band index
 info_dict['I_IND'] = 3 # i-band index
 info_dict['Z_IND'] = 4 # z-band index
 info_dict['Y_IND'] = 5 # y-band index
-# (etc, for the rest of the bands)
 
 maker = redmapper.GalaxyCatalogMaker(filename_base, info_dict, nside=int(64*2))
 
@@ -55,7 +54,7 @@ pkeys = {
         }
 
 bands = ['u','g','r','i','z','y']
-for input_file in input_files:
+for input_file in tqdm(input_files[:17]) :
     # insert code to translate to file format
     og = tables_io.read(input_file)
     og = vstack([Table(og[fkey]) for fkey in og.keys() if (fkey != 'metaData')])
@@ -63,7 +62,6 @@ for input_file in input_files:
     for pkey in pkeys.keys() :
         galaxies[pkey] = og[pkeys[pkey]]
     
-    #galaxies['refmag'] = og['mag_z']
     galaxies['refmag_err'] = np.ones_like(galaxies['refmag']) * info_dict['ZP'] / galaxies['refmag']
 
     galaxies['mag'] = np.array([og[f'LSST_obs_{band}'] for band in bands]).T
