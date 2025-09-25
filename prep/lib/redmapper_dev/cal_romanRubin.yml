@@ -1,0 +1,270 @@
+# This is an example calibration file, based on one used to calibrate SDSS DR8
+# Please note that these settings are appropriate for a ~10000 deg^2 survey with
+# ugriz bands, focused on lower redshift (z<0.6) clusters.
+
+# Galaxy file for input
+galfile: /pbs/home/r/rsolomon/pbs_rsolomon/redmapper/data_prep/input_data/galcat/_master_table.fit
+
+# Path to put plots in
+plotpath: 'plots'
+
+# Galaxy catalog has truth information (as with simulated catalogs)
+has_truth: False
+
+# Healpixel over which to run calibration
+# Set "hpix" and "nside" to 0 to run the full footprint
+hpix: 0 #[0]
+# Nside of this healpix
+nside: 0
+# Should be set to 0 for calibration
+border: 0.0
+
+# Reference magnitude (band) name
+# Recommend z-band for cluster-finding to higher redshift z>0.8)
+refmag: z
+
+# Redshift range [lo, hi]
+#zrange: [0.05, 0.60]
+zrange: [0.1, 0.60]
+
+# Spectroscopic input catalog
+specfile: /pbs/home/r/rsolomon/pbs_rsolomon/redmapper/data_prep/input_data/specz/roman_rubin_specz.fits
+
+# All files will start with this name
+# If the name ends with "cal" it will be replaced with "run" for the runs
+outbase: rubinRoman_test_cal
+
+# Maximum chi-squared to consider a possible member.  Default is 20.0
+chisq_max: 20.0
+
+# L* threshold for computing richness.  Default is optimal 0.2
+lval_reference: 0.2
+
+# Name of the "survey" for the m*(z) file
+# (see README.md for details)
+mstar_survey: lsst
+# Name of the "band" for the m*(z) file
+mstar_band: z03
+
+# Maximum weighted coverage area of a cluster to be masked before it
+# is removed from the catalog.  Default is 0.2
+max_maskfrac: 0.2
+
+# Number of sample galaxies to compute mask region.  Default is 6000
+maskgal_ngals: 6000
+# Number of different samples of maskgal_ngals (reduces biases at high redshift)
+maskgal_nsamples: 100
+# Filetype mode for the geometric mask.  Default is 0
+# Mode 3 is a healpix mask.  (only mode supported)
+mask_mode: 3
+# Name of the mask file.  See README.md for format.  Default is None
+maskfile: /pbs/throng/lsst/users/rsolomon/redmapper/data_prep/masks/roman_rubin_geoMask.hs
+
+# Name of the depth file.  See README.md for format.  Default is None
+depthfile: /pbs/throng/lsst/users/rsolomon/redmapper/data_prep/masks/roman_rubin_depthMask.hs
+
+# chi-squared binsize for background.  Default is 0.5
+bkg_chisqbinsize: 0.5
+# reference mag binsize for background.  Default is 0.2
+bkg_refmagbinsize: 0.2
+# redshift binsize for background.  Default is 0.02
+bkg_zbinsize: 0.02
+# redshift binsize for zred background.  Default is 0.01
+bkg_zredbinsize: 0.01
+# Compute background down to the magnitude limit?  Default is False
+# This will be useful in the future when computing membership probabilities
+# for non-members (not supported yet).  If turned on, background
+# computation is slower (depending on depth).
+bkg_deepmode: False
+
+# Name of centering class for calibration first iteration.  Default is CenteringBCG
+firstpass_centerclass: CenteringBCG
+# Name of centering class for cluster runs.  Default is CenteringWcenZred
+centerclass: CenteringWcenZred
+
+# Number of iterations for calibration.  Default is 3
+calib_niter: 3
+# Number of cores on local machine for calibration (zred, background)
+# Default is 1
+calib_nproc: 4
+# Number of cores on local machine for calibration cluster finder runs
+# Default is 1
+calib_run_nproc: 4
+
+# Nsig for consistency with red sequence to be used in red-sequence calibration.  Default is 1.5
+#  Make this too wide, and blue galaxies contaminate the red sequence width computation.
+#  Make this too narrow, and there is not enough signal.  Empirically, 1.5 works well.
+calib_color_nsig: 1.5
+# Nsig for consistence with red sequence to be used as a training seed galaxy.  Default is 2.0
+calib_redspec_nsig: 2.0
+
+# Red-sequence color template file for initial guess of red sequence.
+# This file does not need a full path if it is in the data/initcolors path in the package
+# which will be searched first.  If it is a file not in the redmapper package, this
+# should be a full path.
+calib_redgal_template: bc03_colors_lsst.fit
+# Redshift spline node spacing for red-sequence pivot magnitude
+# Default is 0.1
+calib_pivotmag_nodesize: 0.1
+# Redshift spline node spacing for each color.  Must be array of length nmag - 1
+# Recommended default is 0.05 for each color
+calib_color_nodesizes: [0.05, 0.05, 0.05, 0.05, 0.05]
+# Redshift spline node spacing for each slope.  Must be array of length nmag - 1
+# Recommended default is 0.1 for each color slope
+calib_slope_nodesizes: [0.1, 0.1, 0.1, 0.1, 0.1]
+# Maximum redshift for spline to use in fit.
+# Recommended is -1 (max redshift) for each color, unless a band is very shallow/blue
+# (for SDSS in this sample, only consider u-g in detail at z<0.4)
+calib_color_maxnodes: [0.4, -1, -1, -1, -1]
+# Maximum redshift for covariance spline to use in fit.
+# Recommended is -1 (max redshift) for each color, unless a band is very shallow/blue
+# (For SDSS in this sample, only consider u-g in detail in covmat at z<0.4)
+calib_covmat_maxnodes: [0.5, -1, -1, -1, -1]
+# Redshift spline node spacing for covariance matrix.  Default is 0.15
+calib_covmat_nodesize: 0.15
+# Redshift spline node spacing for zred corrections.  Default is 0.05
+calib_corr_nodesize: 0.05
+# Redshift spline node spacing for zred slope corrections.  Default is 0.1
+calib_corr_slope_nodesize: 0.1
+
+# Use "pcol" (which excludes radial weight) in selecting galaxies to calibrate the
+#  red sequence.  Default is True, which is strongly recommended.
+calib_use_pcol: True
+# Membership probability cut to compute zred corrections.  Default is 0.9
+calib_corr_pcut: 0.9
+# Membership probability cut for pivotmag and median color computation.  Default is 0.7
+calib_color_pcut: 0.7
+
+# Membership probability cut for use in red-sequence calibration.  Default is 0.3
+calib_pcut: 0.3
+# Minimum richness for a cluster to be considered a calibration cluster.  Default is 5.0
+calib_minlambda: 5.0
+# Smoothing kernel on redshifts from calibration clusters.  Default is 0.003
+calib_smooth: 0.003
+
+# Luminosity function filter alpha parameter.
+calib_lumfunc_alpha: -1.0
+
+# Zeroth iteration color training parameters
+
+# Scale radius of radius/richness relation (r_lambda = r0 * (lambda/100)^beta)
+# Default is 0.5 (h^-1 Mpc)
+calib_colormem_r0: 0.5
+# Power-law slope of radius/richness relation
+# Default is 0.0
+calib_colormem_beta: 0.0
+# Smoothing kernel on redshifts from color calib clusters.  Default is 0.003
+calib_colormem_smooth: 0.003
+# Minimum richness to be used as a color-training cluster.  Default is 10.0
+calib_colormem_minlambda: 5.0 #10.0 RANCE
+# Color indices for training, redshift bounds, and assumed intrinsic scatter.
+# For the following settings:
+#  Low redshift: z<0.35, use color index 1 (g-r), intrinsic scatter 0.05
+#  Middle redshift: 0.5<z<0.72, use color index 2 (r-i), intrinsic scatter 0.03
+#  High redshift: z>0.72, use color index 3 (i-z), intrinsic scatter 0.03
+# (Note that the high redshift one is not used if zrange[1] = 0.60)
+# Note that if you have griz and not ugriz this should be [0, 1, 2]
+calib_colormem_colormodes: [1, 2, 3]
+calib_colormem_zbounds: [0.35, 0.72]
+calib_colormem_sigint: [0.05, 0.03, 0.03]
+
+# Cluster photo-z z_lambda parameters
+
+# Redshift spline spacing for correcting cluster z_lambda.  Default is 0.04
+calib_zlambda_nodesize: 0.04
+# Redshift spline spacing for richness slope correction of cluster z_lambda.
+# Default is 0.1
+calib_zlambda_slope_nodesize: 0.1
+# Minimum richness for computing z_lambda correction.  Default is 20.0
+calib_zlambda_minlambda: 20.0
+# Number of z_lambda_e sigma an outlier can be to be included in correction
+# Default is 5.0
+calib_zlambda_clean_nsig: 5.0
+# Number of iterations for z_lambda correction algorithm.  Default is 3
+calib_zlambda_correct_niter: 3
+
+# Pivot richness for richness correction.  Default is 30.0
+zlambda_pivot: 30.0
+# Bin size for interpolating z_lambda correction.  Default is 0.002
+zlambda_binsize: 0.002
+# Tolerance for convergence when computing z_lambda.  Default is 0.0002
+zlambda_tol: 0.0002
+# Maximum number of iterations to converge to z_lambda.  Default is 20
+zlambda_maxiter: 20
+# Fraction of highest probability members to use to compute z_lambda.  Default is 0.7
+zlambda_topfrac: 0.7
+# Step size to fit a parabola to peak of z_lambda likelihood.  Default is 0.002
+zlambda_parab_step: 0.002
+# Epsilon size to compute change in richness as a function of redshift.  Default is 0.005
+zlambda_epsilon: 0.005
+
+# Centering parameters
+
+# Pivot richness for wcen model.  Default is 30.0
+wcen_pivot: 30.0
+# Minumum richness to use in calibrating wcen model.  Default is 10.0
+wcen_minlambda: 10.0
+# Maximum richness to use in calibrating wcen model.  Default is 100.0
+wcen_maxlambda: 100.0
+# Softening radius (h^-1 Mpc) in computing wcen.  Default is 0.05
+wcen_rsoft: 0.05
+# Richness range for calibrating wcen model.
+#  This should be within the volume-limited range of the catalog.
+wcen_cal_zrange: [0.1, 0.3]
+
+# Cluster finder: first pass
+
+# r0 in radius-richness relation (see above).  Default is 0.5 (h^-1 Mpc)
+firstpass_r0: 0.5
+# beta in radius-richness relation.  Default is 0.0
+firstpass_beta: 0.0
+# Number of iterations in first pass.  Default is 2
+firstpass_niter: 2
+# Minimum richness to pass cluster candidate to next step.  Default is 3.0
+firstpass_minlambda: 3.0
+
+# Cluster finder: Likelihood pass
+
+# r0 is radius-richness relation (see above).  Default is 1.0 (h^-1 Mpc)
+#  Note that these should typically be the same as used in percolation
+likelihoods_r0: 1.0
+# beta in radius-richness relation.  Default is 0.2
+likelihoods_beta: 0.2
+# Should likelihood use the zred in computing likelihood.  Default is True
+likelihoods_use_zred: True
+# Minimum richness to pass cluster candidate to next step.  Default is 3.0
+likelihoods_minlambda: 3.0
+
+# Cluster finder: Percolation pass
+
+# r0 is radius-richness relation (see above).  Default is 1.0 (h^-1 Mpc)
+#  Note that these should typically be the same as used in likelihood
+percolation_r0: 1.0
+# beta in radius-richness relation.  Default is 0.2
+percolation_beta: 0.2
+# rmask_0 in rmask = rmask_0 * (lambda / 100) ^ rmask_beta * (z_lambda / rmask_zpivot)^rmask_gamma
+#  relation.  This sets the radius to which member galaxies are masked in percolation.
+#  This should be >= percolation_r0.  Default is 1.5
+percolation_rmask_0: 1.5
+# beta in rmask relation
+percolation_rmask_beta: 0.2
+# gamma in rmask relation
+percolation_rmask_gamma: 0.0
+# zpivot in rmask relation
+percolation_rmask_zpivot: 0.3
+# Mask galaxies down to this luminosity cut (fainter than richness computation).  Default is 0.1 (L*)
+percolation_lmask: 0.1
+# Number of iterations to compute richness/redshift in percoltation.  Default is 2
+percolation_niter: 2
+# Minimum richness to save cluster.  Default is 3.0
+percolation_minlambda: 3.0
+# Minimum probability of being a bcg for a galaxy to be considered a center.  Default is 0.5
+percolation_pbcg_cut: 0.5
+# Maximum number of possible centrals to record.  Default is 5
+percolation_maxcen: 5
+
+
+
+
+
+
