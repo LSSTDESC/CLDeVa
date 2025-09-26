@@ -3,7 +3,7 @@
 # ugriz bands, focused on lower redshift (z<0.6) clusters.
 
 # Galaxy file for input
-galfile: /pbs/home/r/rsolomon/pbs_rsolomon/redmapper/data_prep/input_data/galcat/_master_table.fit
+galfile: /pbs/throng/lsst/users/rsolomon/redmapper/data_prep/input_data/galcat/_master_table.fit
 
 # Path to put plots in
 plotpath: 'plots'
@@ -28,7 +28,7 @@ refmag: z
 zrange: [0.1, 0.60]
 
 # Spectroscopic input catalog
-specfile: /pbs/home/r/rsolomon/pbs_rsolomon/redmapper/data_prep/input_data/specz/roman_rubin_specz.fits
+specfile: /pbs/throng/lsst/users/rsolomon/redmapper/data_prep/input_data/specz/roman_rubin_specz.fits
 
 # All files will start with this name
 # If the name ends with "cal" it will be replaced with "run" for the runs
