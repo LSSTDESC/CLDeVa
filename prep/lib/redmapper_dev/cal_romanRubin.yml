@@ -1,19 +1,16 @@
-# This is an example calibration file, based on one used to calibrate SDSS DR8
-# Please note that these settings are appropriate for a ~10000 deg^2 survey with
-# ugriz bands, focused on lower redshift (z<0.6) clusters.
 
 # Galaxy file for input
-galfile: /pbs/throng/lsst/users/rsolomon/redmapper/data_prep/input_data/galcat/_master_table.fit
+galfile: /pbs/throng/lsst/users/rsolomon/CLDeVa/prep/lib/redmapper_dev/input_data/galcat/romanRubin_master_table.fit
 
 # Path to put plots in
-plotpath: 'plots'
+plotpath: '/pbs/throng/lsst/users/rsolomon/CLDeVa/prep/lib/redmapper_dev/plots/'
 
 # Galaxy catalog has truth information (as with simulated catalogs)
 has_truth: False
 
 # Healpixel over which to run calibration
 # Set "hpix" and "nside" to 0 to run the full footprint
-hpix: 0 #[0]
+hpix: 0
 # Nside of this healpix
 nside: 0
 # Should be set to 0 for calibration
@@ -24,15 +21,14 @@ border: 0.0
 refmag: z
 
 # Redshift range [lo, hi]
-#zrange: [0.05, 0.60]
-zrange: [0.1, 0.60]
+zrange: [0.05, 0.60]
 
 # Spectroscopic input catalog
-specfile: /pbs/throng/lsst/users/rsolomon/redmapper/data_prep/input_data/specz/roman_rubin_specz.fits
+specfile: /pbs/throng/lsst/users/rsolomon/CLDeVa/prep/lib/redmapper_dev/input_data/specz/romanRubin_specz.fits
 
 # All files will start with this name
 # If the name ends with "cal" it will be replaced with "run" for the runs
-outbase: rubinRoman_test_cal
+outbase: /pbs/throng/lsst/users/rsolomon/CLDeVa/prep/lib/redmapper_dev/calibrations/rubinRoman_test_cal
 
 # Maximum chi-squared to consider a possible member.  Default is 20.0
 chisq_max: 20.0
@@ -58,10 +54,10 @@ maskgal_nsamples: 100
 # Mode 3 is a healpix mask.  (only mode supported)
 mask_mode: 3
 # Name of the mask file.  See README.md for format.  Default is None
-maskfile: /pbs/throng/lsst/users/rsolomon/redmapper/data_prep/masks/roman_rubin_geoMask.hs
+maskfile: /pbs/throng/lsst/users/rsolomon/CLDeVa/prep/lib/redmapper_dev/input_data/geoMasks/romanRubin_geoMask.hs
 
 # Name of the depth file.  See README.md for format.  Default is None
-depthfile: /pbs/throng/lsst/users/rsolomon/redmapper/data_prep/masks/roman_rubin_depthMask.hs
+depthfile: /pbs/throng/lsst/users/rsolomon/CLDeVa/prep/lib/redmapper_dev/input_data/depthMaps/romanRubin_depthMap.hs
 
 # chi-squared binsize for background.  Default is 0.5
 bkg_chisqbinsize: 0.5
