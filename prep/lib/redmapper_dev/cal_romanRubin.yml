@@ -156,7 +156,7 @@ calib_colormem_beta: 0.0
 # Smoothing kernel on redshifts from color calib clusters.  Default is 0.003
 calib_colormem_smooth: 0.003
 # Minimum richness to be used as a color-training cluster.  Default is 10.0
-calib_colormem_minlambda: 5.0 #10.0 RANCE
+calib_colormem_minlambda: 10.0
 # Color indices for training, redshift bounds, and assumed intrinsic scatter.
 # For the following settings:
 #  Low redshift: z<0.35, use color index 1 (g-r), intrinsic scatter 0.05

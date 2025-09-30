@@ -1,15 +1,28 @@
 import healsparse as hs
+import os, sys, yaml
 import healpy as hp
 import numpy as np
 import tables_io
 
+cfgFile = sys.argv[1]
+with open(cfgFile) as fstream :
+    cfg = yaml.safe_load(fstream)
 
-specz = tables_io.read('/pbs/throng/lsst/users/rsolomon/redmapper/data_prep/input_data/specz/roman_rubin_specz.fits')
+specz = tables_io.read(os.path.join(cfg['oFiles']['base'], cfg['oFiles']['specz']))
+pixels = np.unique(
+        hp.ang2pix(
+            cfg['geoMask']['nside_sparse'],
+            specz['ra'],
+            specz['dec'],
+            nest=cfg['geoMask']['nest'],
+            lonlat=True))
+del specz
 
-pixels = np.unique(hp.ang2pix(4096, specz['ra'], specz['dec'], nest=False, lonlat=True))
+geoMap = hs.HealSparseMap.make_empty(
+        cfg['geoMask']['nside_cov'],
+        cfg['geoMask']['nside_sparse'],
+        bool,)
 
-hsmap = hs.HealSparseMap.make_empty(64, 4096, bool,)
+geoMap.update_values_pix(pixels, np.ones(len(pixels)).astype(bool), nest=cfg['geoMask']['nest'])
 
-hsmap.update_values_pix(pixels, np.ones(len(pixels)).astype(bool), nest=False)
-
-hsmap.write('/pbs/throng/lsst/users/rsolomon/redmapper/data_prep/masks/roman_rubin_geoMask.hs', clobber=False)
+geoMap.write(os.path.join(cfg['oFiles']['base'], cfg['oFiles']['geo']), clobber=False)
