@@ -10,9 +10,23 @@ has_truth: False
 
 # Healpixel over which to run calibration
 # Set "hpix" and "nside" to 0 to run the full footprint
-hpix: 0
+hpix: [43434, 43219, 43218, 42999, 43000, 42777, 42776, 42549, 43430,
+         43215, 43214, 42995, 43432, 43217, 43216, 42997, 42998, 42775,
+         42774, 42547, 42996, 42773, 42772, 42545, 42546, 42315, 42314,
+         42079, 42994, 42771, 42770, 42543, 42542, 42311, 42310, 42075,
+         42544, 42313, 42312, 42077, 42078, 41839, 41838, 41595, 42076,
+         41837, 41836, 41593, 41594, 41347, 41346, 41095, 42548, 42317,
+         42316, 42081, 42080, 41841, 41840, 41597, 41596, 41349, 41348,
+         41097, 41098, 40843, 40842, 40587, 41096, 40841, 40840, 40585,
+         40586, 40330, 40329, 40074, 40075, 39819, 39818, 39563, 42074,
+         41835, 41834, 41591, 41590, 41343, 41342, 41091, 41592, 41345,
+         41344, 41093, 41094, 40839, 40838, 40583, 41092, 40837, 40836,
+         40581, 40582, 40326, 40325, 40070, 41090, 40835, 40834, 40579,
+         40580, 40324, 40323, 40068, 40069, 39813, 39812, 39557, 40067,
+         39811, 39810, 39555, 40584, 40328, 40327, 40072, 40073, 39817,
+         39816, 39561, 40071, 39815, 39814, 39559]
 # Nside of this healpix
-nside: 0
+nside: 64
 # Should be set to 0 for calibration
 border: 0.0
 
@@ -28,7 +42,7 @@ specfile: /pbs/throng/lsst/users/rsolomon/CLDeVa/prep/lib/redmapper_dev/input_da
 
 # All files will start with this name
 # If the name ends with "cal" it will be replaced with "run" for the runs
-outbase: /pbs/throng/lsst/users/rsolomon/CLDeVa/prep/lib/redmapper_dev/calibrations/rubinRoman_test_cal
+outbase: /pbs/throng/lsst/users/rsolomon/CLDeVa/prep/lib/redmapper_dev/calibrations/romanRubin_test_cal
 
 # Maximum chi-squared to consider a possible member.  Default is 20.0
 chisq_max: 20.0
