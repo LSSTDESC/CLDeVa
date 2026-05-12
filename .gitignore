@@ -2,6 +2,9 @@ prep/config/*
 !prep/config/example/
 prep/lib/redmapper_dev/input_data/galcat/*
 prep/lib/redmapper_dev/input_data/specz/*
+prep/lib/redmapper_dev/input_data/specz/*
+prep/lib/redmapper_dev/calibrations/
+prep/lib/redmapper_dev/*.fit
 prep/lib/redmapper_dev/*.sh
 prep/lib/redmapper_dev/*.log
 .ipynb_checkpoints
