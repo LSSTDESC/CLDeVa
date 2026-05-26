@@ -1,2 +1,3 @@
+__pycache__
 prep/config/*
 !prep/config/example/
