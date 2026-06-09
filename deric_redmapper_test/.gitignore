@@ -1,0 +1,7 @@
+# large/regenerable data products — keep code only
+redmapper_inputs/
+*.fit
+*.fits
+*.hs
+*.log
+.ipynb_checkpoints/

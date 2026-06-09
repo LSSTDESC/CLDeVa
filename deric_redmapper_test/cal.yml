@@ -1,0 +1,88 @@
+# cal.yml: redMaPPer calibration for cosmoDC2 (LSST ugrizy, z-band reference) (now grizy)
+# used the example yml as a reference
+
+# Input galaxy catalog (master table from GalaxyCatalogMaker)
+galfile: /global/u1/d/dericj/cdc2_rmpr/Funcs/redmapper_inputs/cosmodc2_photo_master_table.fit
+
+# Catalog has truth info (simulated)
+has_truth: False
+
+# Output prefix
+outbase: cosmodc2_cal
+plotpath: 'plots'
+
+# Footprint: 0/0 = run the full footprint -- THIHS WAS WRONG, should be fixed based on example
+hpix: [33, 34, 35, 36, 37, 38, 39, 40, 41]
+nside: 2
+border: 0.0
+
+# Photometry
+refmag: z
+zrange: [0.10, 0.90]
+
+# Spectroscopic training catalog
+specfile: /global/u1/d/dericj/cdc2_rmpr/Funcs/redmapper_inputs/cosmodc2_specz.fits
+
+# m*(z) survey + band selectors
+mstar_survey: lsst
+mstar_band: z03
+
+# Masks 
+mask_mode: 3
+maskfile: /global/u1/d/dericj/cdc2_rmpr/Funcs/redmapper_inputs/cosmodc2_geometry_mask.hs
+depthfile: /global/u1/d/dericj/cdc2_rmpr/Funcs/redmapper_inputs/cosmodc2_depth_mask.hs
+
+# Red-sequence initial color guess bundled LSST file
+calib_redgal_template: bc03_colors_lsst.fit
+
+# Compute resources
+calib_nproc: 4
+calib_run_nproc: 4
+
+# Membership/richness
+chisq_max: 20.0
+lval_reference: 0.2
+max_maskfrac: 0.2
+
+# Spline node sizes, CHANGED TO GRIZY
+calib_color_nodesizes: [0.05, 0.05, 0.05, 0.05]
+calib_slope_nodesizes: [0.1, 0.1, 0.1, 0.1]
+# Per-color max redshift node CHANGED FOR GRIZY
+calib_color_maxnodes: [-1, -1, -1, -1]
+calib_covmat_maxnodes: [-1, -1, -1, -1]
+
+# Color-training redshift (the g-r then r-i then i-z )
+calib_colormem_colormodes: [0, 1, 2]
+calib_colormem_zbounds: [0.35, 0.72]
+calib_colormem_sigint: [0.05, 0.03, 0.03]
+
+bands: ['g', 'r', 'i', 'z', 'y']
+survey_mode: 0
+limmag_ref: 26.0
+limmag_catalog: 26.0
+b: [0.0, 0.0, 0.0, 0.0, 0.0]
+
+# Cluster finder parameters (documented defaults from cal_example.yml)
+percolation_lmask: 0.1
+percolation_r0: 1.0
+percolation_beta: 0.2
+percolation_rmask_0: 1.5
+percolation_rmask_beta: 0.2
+percolation_rmask_gamma: 0.0
+percolation_rmask_zpivot: 0.3
+percolation_niter: 2
+percolation_minlambda: 3.0
+percolation_pbcg_cut: 0.5
+percolation_maxcen: 5
+firstpass_r0: 0.5
+firstpass_beta: 0.0
+firstpass_niter: 2
+firstpass_minlambda: 3.0
+likelihoods_r0: 1.0
+likelihoods_beta: 0.2
+likelihoods_use_zred: True
+likelihoods_minlambda: 3.0
+ref_ind: 3
+#changed slightly for experimentation
+calib_zlambda_minlambda: 3.0 
+calib_zlambda_nodesize: 0.10
