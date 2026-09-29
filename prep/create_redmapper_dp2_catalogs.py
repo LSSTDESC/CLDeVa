@@ -17,7 +17,11 @@ import astropy.units as u
 import redmapper_dp2_common as common
 from dustmaps.sfd import SFDQuery
 
-import redmapper
+## only build needs redmapper. at NERSC extract runs in the LSST stack, which doesn't have it
+try:
+    import redmapper
+except ImportError:
+    redmapper = None
 
 '''
 Initial definitions

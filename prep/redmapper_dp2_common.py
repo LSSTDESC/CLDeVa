@@ -9,8 +9,12 @@ import os
 import numpy as np
 import healpy as hp
 
-from lsst.daf.butler import Butler
-from lsst.geom import SpherePoint, degrees
+## only the butler steps need these. at NERSC build runs in the desc_rm env, which has no LSST stack
+try:
+    from lsst.daf.butler import Butler
+    from lsst.geom import SpherePoint, degrees
+except ImportError:
+    Butler = SpherePoint = degrees = None
 
 '''
 Initial definitions

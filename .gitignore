@@ -1,2 +1,5 @@
 prep/config/*
 !prep/config/example/
+
+# nersc slurm logs
+prep/nersc/*.log
