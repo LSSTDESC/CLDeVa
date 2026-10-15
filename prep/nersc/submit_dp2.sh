@@ -1,24 +1,14 @@
 #!/bin/bash
-## submits the butler job, then the redmapper build and spec-z jobs to start only if it succeeds
-##   ./submit_dp2.sh            full DP2
-##   ./submit_dp2.sh --test     one tract (10188) on the debug queue, into $SCRATCH/dp2_redmapper_test
-## OUT_DIR, N_PROCS, MAPS_ARGS, EXTRACT_ARGS, BUILD_ARGS, SELECT_ARGS, RED_ARGS are passed through to the jobs
-set -e
-NERSC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-export PREP_DIR=$(dirname ${NERSC_DIR})
+## everything for riz 2 visits, riz 3 visits and griz 2 visits, all b < -20, each with no star mask
+## and with the G < 12, 15, 16 star masks. writes to $SCRATCH/dp2_redmapper/v2
+## the visit counts are done already, link them in first:  <setup>/maps/cell_counts -> the old riz / griz counts
+cd ~/CLDeVa/prep/nersc
 
-BUTLER_OPTS=""
-RM_OPTS=""
-if [ "$1" == "--test" ]; then
-    export OUT_DIR=${OUT_DIR:-$SCRATCH/dp2_redmapper_test}
-    export MAPS_ARGS="--tracts 10188 ${MAPS_ARGS}"
-    export EXTRACT_ARGS="--tracts 10188 ${EXTRACT_ARGS}"
-    BUTLER_OPTS="--qos=debug --time=00:30:00"
-    RM_OPTS="--qos=debug --time=00:15:00"
-fi
-
-cd ${NERSC_DIR}
-butler_id=$(sbatch --parsable --export=ALL ${BUTLER_OPTS} slurm_dp2_butler.sh)
-rm_id=$(sbatch --parsable --export=ALL --dependency=afterok:${butler_id} ${RM_OPTS} slurm_dp2_redmapper.sh)
-specz_id=$(sbatch --parsable --export=ALL --dependency=afterok:${butler_id} ${RM_OPTS} slurm_dp2_specz.sh)
-echo "butler job ${butler_id} -> build job ${rm_id} + spec-z job ${specz_id} (afterok), logs in ${NERSC_DIR}"
+stars=$(sbatch --parsable slurm_star_masks.sh)
+riz2=$(sbatch --parsable -d afterok:$stars slurm_maps.sh riz 2)
+riz3=$(sbatch --parsable -d afterok:$stars slurm_maps.sh riz 3)
+griz2=$(sbatch --parsable -d afterok:$stars slurm_maps.sh griz 2)
+fluxes=$(sbatch --parsable -d afterok:$riz2 slurm_extract.sh)
+sbatch -d afterok:$fluxes:$riz2 slurm_build.sh riz 2
+sbatch -d afterok:$fluxes:$riz3 slurm_build.sh riz 3
+sbatch -d afterok:$fluxes:$griz2 slurm_build.sh griz 2
